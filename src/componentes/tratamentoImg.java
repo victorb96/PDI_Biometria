@@ -141,7 +141,6 @@ public class tratamentoImg {
                 if(j != 0 && i <= x)pixelEsquerdo = map[i][j-1];
                 //pixel a diagonal inferior a esquerdo do central
                 if(i < x-1 && j != 0)pixelDiInE = map[i+1][j-1];
-
                 
                 if(pixelCentral == black && pixelDiSuD == black && pixelDiInD == black){
                     
