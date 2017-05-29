@@ -72,53 +72,24 @@ public class tratamentoImg {
     
     private void esqueletizar(BufferedImage img, int pb, int pw){
         
-        int x = img.getWidth();
-        int y = img.getHeight();
-        int[][] colorsPixels = this.getColorPixels(img);
+        int[][] colorsPixels = this.alterMapPixels(img, pb, pw);
         
-        System.out.println(x);
-        System.out.println(y);
         try{
-            for(int j = 0; j < y; j++){
-                for(int i = 0; i < x; i++){
+            for(int j = 0; j < img.getHeight(); j++){
+                for(int i = 0; i < img.getWidth(); i++){
                     
-                    //pega o pixel central 
-                    int pixelCentral = colorsPixels[i][j];
-                    int pixelDireito = 0;
-                    int pixelDiInD = 0;
-                    int pixelBaixo = 0;
-                    int pixelDiInE = 0;
-                    int pixelEsquerdo = 0;
-                    int pixelDiSuE = 0;
-                    int pixelCima = 0;
-                    int pixelDiSuD = 0;
-                    /*as condicionais verificam se existem os pixels vizinhos e  
-                    *se existirem sao atribuidos as suas respectivas variaveis
-                    */
-                    //pixel a direita do central
-                    if(i < x-1)pixelDireito = colorsPixels[i+1][j];
-                    //pixel a diagonal inferior a direita do central
-                    if(i < x-1 && j < y-1)pixelDiInD = colorsPixels[i+1][j+1];
-                    //pixel abaixo do central
-                    if(j < y-1 && i <= x)pixelBaixo = colorsPixels[i][j+1];
-                    //pixel a diagonal inferior a esquerda do central
-                    if(i != 0 && j < y-1)pixelDiInE = colorsPixels[i-1][j+1];
-                    //pixel a esquerda do central
-                    if(i != 0)pixelEsquerdo = colorsPixels[i-1][j];
-                    //pixel a diagonal superior a esquerda do central
-                    if(i != 0 && j != 0)pixelDiSuE = colorsPixels[i-1][j-1];
-                    //pixel acima do central
-                    if(j != 0 && i <= x)pixelCima = colorsPixels[i][j-1];
-                    //pixel a diagonal superior a direita do central
-                    if(i < x-1 && j != 0)pixelDiSuD = colorsPixels[i+1][j-1];
+                    img.setRGB(i, j, colorsPixels[i][j]);
+           
                 }
             }
+            System.out.println("Imagem esqueletizada");
+            ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "Esqueleto.jpg")));
         }catch(Exception e){
             System.out.println(e);
         }
     }
     
-    private int[][] getColorPixels(BufferedImage img){
+    private int[][] getMapPixels(BufferedImage img){
         
         int x = img.getWidth();
         int y = img.getHeight();
@@ -131,5 +102,62 @@ public class tratamentoImg {
         }
         
         return matrizCores;
+    }
+    
+    private int[][] alterMapPixels(BufferedImage img, int black, int white){
+        
+        int x = img.getWidth();
+        int y = img.getHeight();
+        int[][] map = this.getMapPixels(img);
+        
+        for(int j = 0; j < img.getHeight(); j++){
+            for(int i = 0; i < img.getWidth(); i++){
+                
+                int pixelCentral = map[i][j];
+                int pixelDireito = 0;
+                int pixelDiInD = 0;
+                int pixelBaixo = 0;
+                int pixelDiInE = 0;
+                int pixelEsquerdo = 0;
+                int pixelDiSuE = 0;
+                int pixelCima = 0;
+                int pixelDiSuD = 0;
+                
+                /*as condicionais verificam se existem os pixels vizinhos e  
+                *se existirem sao atribuidos as suas respectivas variaveis
+                *pixel abaixo do central*/
+                if(i < x-1)pixelBaixo = map[i+1][j];
+                //pixel a diagonal inferior a direita do central
+                if(i < x-1 && j < y-1)pixelDiInD = map[i+1][j+1];
+                //pixel direito do central
+                if(j < y-1 && i <= x)pixelDireito = map[i][j+1];
+                //pixel a diagonal superior a direito do central
+                if(i != 0 && j < y-1)pixelDiSuD = map[i-1][j+1];
+                //pixel acima do central
+                if(i != 0)pixelCima = map[i-1][j];
+                //pixel a diagonal superior a esquerda do central
+                if(i != 0 && j != 0)pixelDiSuE = map[i-1][j-1];
+                //pixel esquerdo do central
+                if(j != 0 && i <= x)pixelEsquerdo = map[i][j-1];
+                //pixel a diagonal inferior a esquerdo do central
+                if(i < x-1 && j != 0)pixelDiInE = map[i+1][j-1];
+
+                
+                if(pixelCentral == black && pixelDiSuD == black && pixelDiInD == black){
+                    
+                    map[i-1][j] = white;
+                    map[i][j+1] = white;
+                    map[i+1][j] = white;
+                    
+                }else if(pixelCentral == black && pixelDireito == white && pixelDiInD == white && pixelBaixo == white && 
+                        pixelDiInE == white && pixelEsquerdo == white && pixelDiSuE == white && pixelCima == white && 
+                        pixelDiSuD == white){
+                    map[i][j] = white;
+                }
+                    
+            }
+        }
+        
+        return map;
     }
 }
