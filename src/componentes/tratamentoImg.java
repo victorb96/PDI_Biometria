@@ -43,10 +43,10 @@ public class tratamentoImg {
                     img.setRGB(i, j, pixel);
                 }
             }
-            System.out.println("Imagem cinza");
-            ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "Gray.jpg")));
+            //System.out.println("Imagem cinza");
+            //ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "Gray.jpg")));
             this.limiarizacao(img);
-        }catch(IOException e){
+        }catch(Exception e){
             System.out.println("Error: " +e);
         }
     }
@@ -62,10 +62,10 @@ public class tratamentoImg {
                     img.setRGB(x, y, pixel.getRed() < 160 ? b : w);   
                 }
             }
-            System.out.println("Imagem preto e branco");
-            ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "BlackAndWhite.jpg")));
+            //System.out.println("Imagem preto e branco");
+            //ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "BlackAndWhite.jpg")));
             this.esqueletizar(img, b, w);
-        }catch(IOException e){
+        }catch(Exception e){
             System.out.println("DEU RUIM");
         }
     }
@@ -84,7 +84,7 @@ public class tratamentoImg {
             }
             System.out.println("Imagem esqueletizada");
             ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "Esqueleto.jpg")));
-        }catch(Exception e){
+        }catch(IOException e){
             System.out.println(e);
         }
     }
