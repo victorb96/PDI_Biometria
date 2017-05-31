@@ -10,6 +10,10 @@ public class tratamentoImg {
     
     private BufferedImage newImage = null;
     private String location = null;
+
+    public BufferedImage getNewImage() {
+        return newImage;
+    }
     
     public tratamentoImg(){}
     
@@ -84,6 +88,7 @@ public class tratamentoImg {
             }
             System.out.println("Imagem esqueletizada");
             ImageIO.write(img, "JPG", new File(this.location.replaceAll(".jpg", "Esqueleto.jpg")));
+            this.newImage = img;
         }catch(IOException e){
             System.out.println(e);
         }

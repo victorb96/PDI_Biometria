@@ -1,8 +1,10 @@
 
 package componentes;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.Icon;
+import validacao.Validacao;
 
 public class Usuario {
     private String nome;
@@ -10,6 +12,7 @@ public class Usuario {
     private String rg;
     private String cpf;
     private Icon digital;
+    private BufferedImage digitalTratada = null;
 
     public Usuario(String nome, String sobrenome, String rg, String cpf) {
         this.nome = nome;
@@ -59,6 +62,14 @@ public class Usuario {
     public void setDigital(Icon digital) {
         this.digital = digital;
     }
+
+    public BufferedImage getDigitalTratada() {
+        return digitalTratada;
+    }
+
+    public void setDigitalTratada(BufferedImage digitalTratada) {
+        this.digitalTratada = digitalTratada;
+    }
     
     public void trataImage(){
         
@@ -67,6 +78,12 @@ public class Usuario {
         System.out.println(urlImage);
         tratamentoImg testeImg = new tratamentoImg();
         testeImg.convert(urlImage);
+        
+        this.digitalTratada = testeImg.getNewImage();
+        
+        //Validacao val = new Validacao();
+        
+        //val.getDigitalDetail(this.digitalTratada);
     }
 
     public ArrayList teste(){

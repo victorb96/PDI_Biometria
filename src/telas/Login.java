@@ -1,12 +1,15 @@
 
 package telas;
 
+import componentes.Usuario;
 import java.awt.HeadlessException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import validacao.Validacao;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -30,6 +33,7 @@ public class Login extends javax.swing.JPanel {
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
         btnGetImage = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         lblTitulo.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -80,6 +84,13 @@ public class Login extends javax.swing.JPanel {
             }
         });
 
+        btnSave.setText("Entrar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,7 +114,10 @@ public class Login extends javax.swing.JPanel {
                                 .addComponent(lblCPF)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnGetImage))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnGetImage)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSave)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -125,7 +139,9 @@ public class Login extends javax.swing.JPanel {
                     .addComponent(lblCPF)
                     .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnGetImage)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGetImage)
+                    .addComponent(btnSave))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -148,9 +164,25 @@ public class Login extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnGetImageActionPerformed
 
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        Validacao validacao = new Validacao();
+        BufferedImage skeleton = validacao.checkExistSkeleton(lblImagem1.getIcon().toString());
+        
+        if(skeleton == null){
+            JOptionPane.showMessageDialog(this, "Digital não encotrada");
+            return;
+        }
+        
+        Usuario user = new Usuario();
+        
+        validacao.digitalValidate(skeleton, user.getDigitalTratada());
+    }//GEN-LAST:event_btnSaveActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGetImage;
+    private javax.swing.JButton btnSave;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblCPF;
     private javax.swing.JLabel lblImagem1;
