@@ -1,19 +1,44 @@
 
 package validacao;
 
-import com.sun.prism.paint.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
 public class Validacao {
     
+    private BufferedImage imgCad = null;
+    private ArrayList dadosCad = null;
+    private ArrayList dadosLog = null;
+
+    public ArrayList getDadosCad() {
+        return dadosCad;
+    }
+
+    public void setDadosCad(ArrayList dados) {
+        this.dadosCad = dados;
+    }
+
+    public ArrayList getDadosLog() {
+        return dadosLog;
+    }
+
+    public void setDadosLog(ArrayList dadosLog) {
+        this.dadosLog = dadosLog;
+    }
+    
+    public void checkData(){
+        for(int i = 0; i < this.dadosCad.size(); i++){
+            System.out.println("DADOS CAD: "+this.dadosCad.get(i));
+            System.out.println("DADOS LOG: "+this.dadosLog.get(i));
+        }
+    }
+
     public boolean checkValidForm(JPanel form){
         if(form.isValid()){
             JOptionPane.showMessageDialog(form.getParent(), "Campo Não Preenchido!");
@@ -31,46 +56,63 @@ public class Validacao {
         }
     }
     
-    public BufferedImage checkExistSkeleton(String digital){
+    public boolean checkExistSkeleton(String digital){
         try{
             digital = digital.replaceAll(".jpg", "Esqueleto.jpg");
-            BufferedImage skeleton = ImageIO.read(new File(digital));
-            return skeleton;
+            this.imgCad = ImageIO.read(new File(digital));
+            return true;
         }catch(IOException e){
-            return null;
+            return false;
         }
     }
     
-    public void digitalValidate(BufferedImage imgCad, BufferedImage imgLog){
+    public boolean digitalValidate(String imgLog){
         
-        if(imgCad.getHeight() == imgLog.getHeight() && imgCad.getWidth() == imgLog.getWidth()){
-            
-            //ArrayList pixelsLog = new ArrayList();
-            //ArrayList pixelsCad = new ArrayList();
-            
-            int nMinuciaLog = 0;
-            int nMinuciaCad = 0;
-            
-            int b = java.awt.Color.BLACK.getRGB();
-            int w = java.awt.Color.WHITE.getRGB();
-            
-            int[] N = new int[imgCad.getHeight()*imgCad.getWidth()];
-            ArrayList pixels = new ArrayList();
-            
-            for(int j = 0; j < imgCad.getHeight(); j++){
-                for(int i = 0; i < imgCad.getWidth(); i++){
-                    pixels.add(imgCad.getRGB(i, j));
+        try {
+            BufferedImage newImg = ImageIO.read(new File(imgLog));
+            if(this.imgCad.getHeight() == newImg.getHeight() && this.imgCad.getWidth() == newImg.getWidth()){
+                
+                int[] vectorImgCad = new int[this.imgCad.getHeight()*this.imgCad.getWidth()];
+                ArrayList pixelsCad = new ArrayList();
+
+                int[] vectorImgLog = new int[this.imgCad.getHeight()*this.imgCad.getWidth()];
+                ArrayList pixelsLog = new ArrayList();
+
+                for(int j = 0; j < this.imgCad.getHeight(); j++){
+                    for(int i = 0; i < this.imgCad.getWidth(); i++){
+                        pixelsCad.add(this.imgCad.getRGB(i, j));
+                        pixelsLog.add(newImg.getRGB(i, j));
+                    }
                 }
+
+                if(this.getDetail(pixelsCad, vectorImgCad) == this.getDetail(pixelsLog, vectorImgLog)){
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
             }
-            
-            for(int i = 0; i < N.length; i++){
-                N[i] = (int) pixels.get(i);
-                if(N[i] == b){
-                    System.out.println("Preto");
-                }else if(N[i] == w){
-                    System.out.println("Branco");
+        } catch (IOException ex) {
+            System.out.println("ERROR: "+ex);
+            return false;
+        }
+    }
+    
+    private int getDetail(ArrayList arrayImage, int[]newArrayImage){
+        
+        int b = java.awt.Color.BLACK.getRGB();
+        int w = java.awt.Color.WHITE.getRGB();
+        int count = 0;
+        
+        for(int i = 0; i < newArrayImage.length; i++){
+            newArrayImage[i] = (int) arrayImage.get(i);
+            if(i-1 != -1){
+                if(newArrayImage[i] == w && newArrayImage[i-1] == b){
+                    count += 1;
                 }
             }
         }
+        return count;
     }
 }

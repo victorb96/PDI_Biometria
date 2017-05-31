@@ -224,13 +224,9 @@ public class Tela_Cad extends javax.swing.JPanel {
         
         //String x = usuario.getNome();
         
-        ArrayList dados = usuario.teste();
+        ArrayList dados = usuario.init();
         
-        int i;
-        
-        for(i=0;i<dados.size();i++){
-            System.out.println(dados.get(i));
-        }
+        validacao.setDadosCad(dados);
         
         Login login = new Login();
         JFrame frame = new JFrame();
