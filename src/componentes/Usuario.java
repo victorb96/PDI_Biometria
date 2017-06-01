@@ -4,6 +4,7 @@ package componentes;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.Icon;
+import validacao.Validacao;
 
 public class Usuario {
     private String nome;
@@ -85,16 +86,18 @@ public class Usuario {
         //val.digitalValidate(this.digitalTratada);
     }
 
-    public ArrayList init(){
-        ArrayList dados = new ArrayList();
+    public void init(){
+        //ArrayList dados = new ArrayList();
         
-        dados.add(this.nome);
-        dados.add(this.sobrenome);
-        dados.add(this.rg);
-        dados.add(this.cpf);
+        //dados.add(this.nome);
+        //dados.add(this.sobrenome);
+        //dados.add(this.rg);
+        //dados.add(this.cpf);
+        
+        //Validacao validacao = new Validacao();
+        
+        //validacao.setDadosCad(dados);
         
         this.trataImage();
-        
-        return dados;
     }
 }

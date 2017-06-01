@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import componentes.Usuario;
-import validacao.Validacao;
+import validacao.*;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -222,11 +222,14 @@ public class Tela_Cad extends javax.swing.JPanel {
         
         usuario.setDigital(lblImagem.getIcon());
         
-        //String x = usuario.getNome();
+        usuario.init();
         
-        ArrayList dados = usuario.init();
+        ArrayList dados = new ArrayList();
+        dados.add(txtNome.getText());
+        dados.add(txtRG.getText());
+        dados.add(txtCPF.getText());
         
-        validacao.setDadosCad(dados);
+        Dados.setDadosCad(dados);
         
         Login login = new Login();
         JFrame frame = new JFrame();

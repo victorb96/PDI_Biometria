@@ -11,19 +11,12 @@ import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
 public class Validacao {
-    
+
     private BufferedImage imgCad = null;
-    private ArrayList dadosCad = null;
+    private final ArrayList dadosCad = Dados.getDadosCad();
     private ArrayList dadosLog = null;
-
-    public ArrayList getDadosCad() {
-        return dadosCad;
-    }
-
-    public void setDadosCad(ArrayList dados) {
-        this.dadosCad = dados;
-    }
-
+    private String msg;
+    
     public ArrayList getDadosLog() {
         return dadosLog;
     }
@@ -32,11 +25,32 @@ public class Validacao {
         this.dadosLog = dadosLog;
     }
     
-    public void checkData(){
-        for(int i = 0; i < this.dadosCad.size(); i++){
-            System.out.println("DADOS CAD: "+this.dadosCad.get(i));
-            System.out.println("DADOS LOG: "+this.dadosLog.get(i));
+    public boolean checkData(){
+        
+        boolean valid = true;
+        int x = this.dadosCad.size();
+        
+        for(int i = 0; i < x; i++){
+            //System.out.println("CAD: "+this.dadosCad.get(i)+" LOG: "+this.dadosLog.get(i));
+            String cad = this.dadosCad.get(i).toString();
+            String log = this.dadosLog.get(i).toString();
+            if(!cad.equals(log)){
+                //System.out.println("Dados Incopativeis");
+                //JOptionPane.showMessageDialog(null, "Dados Incopativeis");
+                valid = false;
+                break;
+            }
         }
+        
+        if(valid){
+           this.msg = "Bem Vindo "+dadosLog.get(0)+"!";
+        }
+    
+        return valid;
+    }
+    
+    public String returnMsg(){
+        return this.msg;
     }
 
     public boolean checkValidForm(JPanel form){

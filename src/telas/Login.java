@@ -3,12 +3,9 @@ package telas;
 
 import componentes.Usuario;
 import java.awt.HeadlessException;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -16,6 +13,7 @@ import javax.swing.JOptionPane;
 import validacao.Validacao;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import validacao.Dados;
 
 public class Login extends javax.swing.JPanel {
     
@@ -172,6 +170,13 @@ public class Login extends javax.swing.JPanel {
         // TODO add your handling code here:
         Validacao validacao = new Validacao();
         
+        ArrayList dados = new ArrayList();
+        dados.add(txtNome.getText());
+        dados.add(txtRG.getText());
+        dados.add(txtCPF.getText());
+        
+        validacao.setDadosLog(dados);
+        
         if(!validacao.checkExistSkeleton(lblImagem1.getIcon().toString())){
             JOptionPane.showMessageDialog(this, "Digital não encotrada");
             return;
@@ -180,7 +185,7 @@ public class Login extends javax.swing.JPanel {
         Usuario user = new Usuario();
         
         user.setDigital(lblImagem1.getIcon());
-        ArrayList dados = user.init();
+        user.init();
         
         String caminho = lblImagem1.getIcon().toString().replaceAll(".jpg", "\\LOG\\Esqueleto.jpg");
         System.out.println(caminho);
@@ -190,14 +195,11 @@ public class Login extends javax.swing.JPanel {
             System.out.println(ex);
         }
         
-        if(!validacao.digitalValidate(caminho)){
-            JOptionPane.showMessageDialog(this, "Problemas de leitura, tente outra vez");
-            return;
+        if(validacao.digitalValidate(caminho) && validacao.checkData()){
+            JOptionPane.showMessageDialog(this, validacao.returnMsg());
+        }else{
+            JOptionPane.showMessageDialog(this, "ERROR: DADOS OU DIGITAL NÃO ENCOTRADO");
         }
-        
-        validacao.setDadosLog(dados);
-        
-        validacao.checkData();
     }//GEN-LAST:event_btnSaveActionPerformed
 
 
