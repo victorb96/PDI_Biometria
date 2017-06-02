@@ -187,8 +187,8 @@ public class Login extends javax.swing.JPanel {
         user.setDigital(lblImagem1.getIcon());
         user.init();
         
-        String caminho = lblImagem1.getIcon().toString().replaceAll(".jpg", "\\LOG\\Esqueleto.jpg");
-        System.out.println(caminho);
+        String caminho = lblImagem1.getIcon().toString().replaceAll(".jpg", "LOGEsqueleto.jpg");
+        //System.out.println(caminho);
         try {
             ImageIO.write(user.getDigitalTratada(), "JPG", new File(caminho));
         } catch (IOException ex) {
